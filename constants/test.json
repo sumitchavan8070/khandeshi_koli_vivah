@@ -1,0 +1,141 @@
+{
+    "districts": [
+        
+        {
+            "district": "Dhule",
+            "subDistricts": [
+                {
+                    "subDistrict": "Dhule",
+                    "villages": [
+                        "Ajang",
+                        "Ajnale",
+                        "Aklad",
+                        "Amdad",
+                        "Babhulwadi",
+                        "Babre",
+                        "Ratanpura",
+                        "Wadel",
+                        "Wadgaon",
+                        "War"
+                    ]
+                },
+                {
+                    "subDistrict": "Sakri",
+                    "villages": [
+                        "Aichale",
+                        "Aine",
+                        "Akhade",
+                        "Ashtane",
+                        "Babhulade"
+                    ]
+                },
+                {
+                    "subDistrict": "Shirpur",
+                    "villages": [
+                        "Abhanpur Kh",
+                        "Adhe",
+                        "Waghadi",
+                        "Zende Anjan"
+                    ]
+                }
+                
+            ]
+        },
+        
+        {
+            "district": "Kolhapur",
+            "subDistricts": [
+                {
+                    "subDistrict": "Ajra",
+                    "villages": [
+                        "Ajra",
+                        "Dhamane",
+                        "Erandol",
+                        "Honyali",
+                        "Ite",
+                        "Masoli"
+                    ]
+                },
+                {
+                    "subDistrict": "Bavda",
+                    "villages": [
+                        "Andur",
+                        "Asalaj"
+                    ]
+                },
+                {
+                    "subDistrict": "Bhudargad",
+                    "villages": [
+                        "Admapur",
+                        "Hanbarwadi",
+                        "Hedvade"
+                    ]
+                },
+                {
+                    "subDistrict": "Chandgad",
+                    "villages": [
+                        "Adkur",
+                        "Yaratanhatti"
+                    ]
+                }
+            ]
+        },
+        
+        {
+            "district": "Satara",
+            "subDistricts": [
+                {
+                    "subDistrict": "Jaoli",
+                    "villages": [
+                        "Kolewadi",
+                        "Vatambe",
+                        "Vele",
+                        "Vivar",
+                        "Waghali",
+                        "Waki",
+                        "Yekiv"
+                    ]
+                },
+                {
+                    "subDistrict": "Karad",
+                    "villages": [
+                        "5alshirambe",
+                        "Yeravale",
+                        "Yeshwantnagar",
+                        "Yevati"
+                    ]
+                },
+                
+                {
+                    "subDistrict": "Man",
+                    "villages": [
+                        "Agaswadi",
+                        "Andhali",
+                        "Chillarwadi",
+                        "Dahivadi",
+                        "Jadhavwadi",
+                        "Jambhulani",
+                        "Malavadi",
+                        "Shevari"
+                    ]
+                },
+                
+                {
+                    "subDistrict": "Satara",
+                    "villages": [
+                        "Agudewadi",
+                        "Akale",
+                        "Wadhe",
+                        "Wasole",
+                        "Wavadare",
+                        "Yavateshwar",
+                        "Zarewadi"
+                    ]
+                }
+                
+            ]
+        }
+        
+    ],
+    "state": "Maharashtra"
+}

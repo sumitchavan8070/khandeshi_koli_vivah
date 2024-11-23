@@ -33,6 +33,30 @@ export const getRequest = async (apiEndPoint) => {
   }
 };
 
+export const getRequestWithParams = async (apiEndPoint, params = {}) => {
+  try {
+    console.log(
+      `^^^^^^^^^^^^^^^^^^ ${apiEndPoint} getRequest Start ^^^^^^^^^^^^^^^^^^`
+    );
+
+    // Pass params to the GET request
+    const response = await apiClient.get(apiEndPoint, { params });
+
+    console.log(
+      `^^^^^^^^^^^^^^^^^^ ${apiEndPoint} getRequest End ^^^^^^^^^^^^^^^^^^`
+    );
+
+    if (response.status !== 200) {
+      throw new Error(`Failed to load data: ${response.status}`);
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error(`Error in GET request to ${apiEndPoint}:`, error);
+    throw error;
+  }
+};
+
 // POST request function
 export const postRequest = async (apiEndPoint, postData, formData = null) => {
   try {

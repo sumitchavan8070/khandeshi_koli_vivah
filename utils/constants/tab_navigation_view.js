@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SvgXml } from "react-native-svg";
 import Home from "../../Screens/Home";
 import SettingsScreen from "./set_screen_view";
+import LandingView from "../../home_module/view/landing_view";
 
 // Screen Components
 function ProfileScreen() {
@@ -91,7 +92,7 @@ export default function TabView() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={ProfileScreen} />
+      <Tab.Screen name="Home" component={LandingView} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
       <Tab.Screen name="About" component={AboutScreen} />

@@ -15,9 +15,15 @@ const GRADIENT_COLORS = {
     "#fbc7d4",
     "#fad0c4",
   ],
-  // Add more gradients if needed
-  //   buttonGradient: ["#3498db", "#d6eaf8"],
+  backgroundGradient: ["#ebf5fb", "#d6eaf8", "#aed6f1"],
   buttonGradient: ["#d6eaf8", "#3498db"],
 };
 
 export default GRADIENT_COLORS;
+
+// Remove the default export for themeColor
+export const themeColor = {
+  appColorLight: "#066AC9",
+  appColorLightExtra: "#aed6f1",
+  filedDisableColor: "#ebf5fb",
+};

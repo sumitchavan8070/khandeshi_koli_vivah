@@ -1,12 +1,18 @@
 import { View, Text } from "react-native";
 import React, { useContext, useEffect } from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  TransitionPresets,
+  StackNavigationOptions,
+} from "@react-navigation/native-stack";
 import { AuthContext } from "../../Context/authContext";
 import Home from "../../Screens/Home";
 import LanguageSelectionScreen from "../../Screens/LanguageSelectionScreen";
 import Register from "../../Screens/Register";
 import Login from "../../Screens/Login";
 import TabView from "../../utils/constants/tab_navigation_view";
+import CreateBioData from "../../Screens/CreateBiodata";
+import BiodataTemplateScreen from "../Biodata/Template/BiodataTemplateScreen";
 
 const ScreenMenu = () => {
   const [state] = useContext(AuthContext);
@@ -16,9 +22,12 @@ const ScreenMenu = () => {
 
   const Stack = createNativeStackNavigator();
 
+  // const screenAOptions = useMemo(() => ({ headerLeft: () => null }), []);
+
   return (
     <Stack.Navigator
       initialRouteName={authenticatedUser ? "TabNavigation" : "Splash"}
+      screenOptions={{ safeAreaInsets: { top: 0 } }}
     >
       {authenticatedUser ? (
         <>
@@ -31,6 +40,18 @@ const ScreenMenu = () => {
           <Stack.Screen
             name="TabNavigation"
             component={TabView}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="CreateBiodata"
+            component={CreateBioData}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="BiodataTemplateScreen"
+            component={BiodataTemplateScreen}
             options={{ headerShown: false }}
           />
         </>
