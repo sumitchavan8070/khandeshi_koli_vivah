@@ -32,6 +32,7 @@ import APIEndPoints from "../utils/network_service/api_endpoints";
 import { postRequest } from "../utils/network_service/api_request";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../Context/authContext";
+import { uploadAlbumToCloudinary } from "../utils/Cloudinary/Cloudinary";
 
 const CreateBioData = ({ route }) => {
   // Set default form state, including auto-prefill from props
@@ -42,13 +43,14 @@ const CreateBioData = ({ route }) => {
 
   // const preFilledData = useGlobalSearchParams();
   // const { preFilledData = {} } = route.params || {}; // Get params from navigation route
-  const { preFilledData } = route.params || {}; // Extract passed data
+  // const { preFilledData } = route.params || {}; // Extract passed data
 
-  // console.log("preFilledData", preFilledData);
+  const formDataSent = route?.params || false;
 
-  // const user = useSelector(selectUser); // Access user state
+  const preFilledData = formDataSent ? JSON.parse(formDataSent) : null;
 
   const [formData, setFormData] = useState({
+    _id: preFilledData?._id || "",
     candidateType: preFilledData?.candidateType || "",
     name: preFilledData?.name || "",
     middleName: preFilledData?.middleName || "",
@@ -400,56 +402,127 @@ const CreateBioData = ({ route }) => {
     //   pathname: "/(biodata)/biodata-template", // Path of biodata-template.tsx
     //   params: { formData: JSON.stringify(formData) }, // Send formData as a parameter
     // });
+    if (!formData._id) {
+      // console.log("---------------form data id was not found----------------");
 
-    // const uploadedPublicIds = await uploadAlbumToCloudinary(
-    //   formData.album,
-    //   user._id,
-    //   preFilledData.biodataId
-    // );
+      const apiEndPoint = APIEndPoints.create_biodata;
+      const postData = { createdBy: state._id };
 
-    // if (!uploadedPublicIds) {
-    //   setLoading(false);
-    //   Alert.alert("Upload Failed", "Failed to upload images.");
-    //   return;
-    // }
+      const checkBiodataIsPresent = await postRequest(apiEndPoint, postData);
+      // console.log(
+      //   "----------------------------------------------->>>>>",
+      //   checkBiodataIsPresent.profile._id
+      // );
 
-    // Step 2: Update formData with the uploaded image IDs
-    setLoading(true);
+      if (!checkBiodataIsPresent.profile._id) {
+        return Alert.alert("Something went wrong! please try again");
+      }
 
-    const updatedFormData = {
-      ...formData,
-      // album: uploadedPublicIds, // Replace album array with uploaded public IDs
-      album: [], // Replace album array with uploaded public IDs
-      createdBy: state._id,
-      biodataStatus: "inpayment",
-    };
-
-    // Step 3: Proceed with form submission (e.g., send data to the server)
-    // console.log("Final Form Data:", updatedFormData);
-
-    // const response = await dispatch(createBiodta(updatedFormData));
-
-    const apiEndPoint = APIEndPoints.create_biodata;
-    // console.log("apiEndPoint", apiEndPoint);
-
-    // const postData = {  };
-    const response = await postRequest(apiEndPoint, updatedFormData);
-    // console.log(response);
-
-    if (response.status == 0) {
-      setLoading(false);
-      return Alert.alert("Error while creating biodata , please try again!");
-    }
-
-    if (response.status == 1) {
-      setLoading(false);
-      // console.log("------> res in 1 :", response.profile);
-      const formData = response.profile;
-      // navigation.navigate("BiodataTemplateScreen", JSON.stringify(formData));
-      navigation.navigate(
-        "BiodataTemplateScreen",
-        JSON.stringify(formData) // Serialize formData
+      const uploadedPublicIds = await uploadAlbumToCloudinary(
+        formData.album,
+        state._id,
+        checkBiodataIsPresent.profile._id
       );
+
+      // if (!uploadedPublicIds) {
+      //   setLoading(false);
+      //   Alert.alert("Upload Failed", "Failed to upload images.");
+      //   return;
+      // }
+
+      // Step 2: Update formData with the uploaded image IDs
+      setLoading(true);
+
+      const updatedFormData = {
+        ...formData,
+        album: uploadedPublicIds, // Replace album array with uploaded public IDs
+        // album: [], // Replace album array with uploaded public IDs
+        createdBy: state._id,
+        biodataStatus: "inpayment",
+      };
+
+      // Step 3: Proceed with form submission (e.g., send data to the server)
+      // console.log("Final Form Data:", updatedFormData);
+      // return;
+
+      // const response = await dispatch(createBiodta(updatedFormData));
+
+      const apiEndPoint2 = APIEndPoints.create_biodata;
+      // console.log("apiEndPoint", apiEndPoint);
+
+      // const postData = {  };
+      const response = await postRequest(apiEndPoint2, updatedFormData);
+      // console.log(response);
+
+      if (response.status == 0) {
+        setLoading(false);
+        return Alert.alert("Error while creating biodata , please try again!");
+      }
+
+      if (response.status == 1) {
+        setLoading(false);
+        // console.log("------> res in 1 :", response.profile);
+        const formData = response.profile;
+        // navigation.navigate("BiodataTemplateScreen", JSON.stringify(formData));
+        navigation.navigate(
+          "BiodataTemplateScreen",
+          JSON.stringify(formData) // Serialize formData
+        );
+      }
+    } else {
+      // console.log("---------------form data id found----------------");
+
+      const uploadedPublicIds = await uploadAlbumToCloudinary(
+        formData.album,
+        state._id,
+        formData._id
+      );
+
+      // if (!uploadedPublicIds) {
+      //   setLoading(false);
+      //   Alert.alert("Upload Failed", "Failed to upload images.");
+      //   return;
+      // }
+
+      // Step 2: Update formData with the uploaded image IDs
+      setLoading(true);
+
+      const updatedFormData = {
+        ...formData,
+        album: uploadedPublicIds, // Replace album array with uploaded public IDs
+        // album: [], // Replace album array with uploaded public IDs
+        createdBy: state._id,
+        biodataStatus: "inpayment",
+      };
+
+      // Step 3: Proceed with form submission (e.g., send data to the server)
+      // console.log("Final Form Data:", updatedFormData);
+      // return;
+
+      // const response = await dispatch(createBiodta(updatedFormData));
+
+      const apiEndPoint = APIEndPoints.create_biodata;
+      // console.log("apiEndPoint", apiEndPoint);
+
+      // const postData = {  };
+      const response = await postRequest(apiEndPoint, updatedFormData);
+      // console.log(response);
+
+      if (response.status == 0) {
+        setLoading(false);
+        return Alert.alert("Error while creating biodata , please try again!");
+      }
+
+      if (response.status == 1) {
+        setLoading(false);
+        // console.log("------> res in 1 :", response.profile);
+        const formData = response.profile;
+        // navigation.navigate("BiodataTemplateScreen", JSON.stringify(formData));
+        navigation.navigate(
+          "BiodataTemplateScreen",
+          JSON.stringify(formData) // Serialize formData
+        );
+      }
     }
   };
 

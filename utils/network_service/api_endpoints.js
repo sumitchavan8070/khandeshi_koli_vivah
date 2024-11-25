@@ -10,7 +10,9 @@ const APIEndPoints = {
   login: "login",
   register: "register",
   create_biodata: "profiles/createProfile",
-  get_inpayment_profiles: "profiles//template/getinpaymentprofile",
+  get_inpayment_profiles: "profiles/template/getinpaymentprofile",
+  delete_biodata_profile: "profiles",
+  get_all_biodata: "profiles",
 };
 
 export default APIEndPoints;

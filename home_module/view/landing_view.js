@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
-import SearchBar from "../../Components/Menus/SearchBar";
+import SearchBar from "../../Components/Biodata/Search/SearchBar";
 import { LinearGradient } from "expo-linear-gradient";
 import GRADIENT_COLORS from "../../constants/Colors";
 import NewsTicker from "../../Components/Home/AutoScrollImageCarousel";
@@ -19,13 +19,23 @@ import ButtonBiodata from "../../Components/Home/ButtonBiodata";
 import Recommendations from "../../Components/Home/Recommendations";
 import FloatingActionButton from "../../Components/Home/FloatingActionButton";
 import { menuSvg, notificationSvg } from "../../constants/Svg";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import ProfileModal from "../../Components/Home/ProfileModal";
+import CreatedBiodata from "../../Components/Home/CreatedBiodata";
+import APIEndPoints from "../../utils/network_service/api_endpoints";
+import { AuthContext } from "../../Context/authContext";
+import {
+  deleteRequest,
+  getRequestWithParams,
+} from "../../utils/network_service/api_request";
+import Header from "../../Components/Header/Header";
 
 const LandingView = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigation = useNavigation(); // React Navigation hook for navigation
   const [modalVisible, setModalVisible] = useState(false);
+  const [state] = useContext(AuthContext);
+  const [profiles, setProfiles] = useState([]);
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
@@ -58,18 +68,65 @@ const LandingView = () => {
   };
 
   const navigateToTemplate = (profile) => {
-    navigation.navigate("BiodataTemplateScreen", { profile });
+    navigation.navigate("BiodataTemplateScreen", JSON.stringify(profile));
   };
 
   const handleUploadPhoto = () => {
     Alert.alert("Upload Photo", "Navigate to the Upload Family Photo Page!");
   };
 
+  // useEffect(() => {
+  //   fetchProfiles();
+  // }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchProfiles();
+    }, []) // Empty dependency array ensures it runs only on screen focus
+  );
+
+  const fetchProfiles = async () => {
+    try {
+      const apiEndPoint = APIEndPoints.get_inpayment_profiles;
+      const userId = state._id;
+      const response = await getRequestWithParams(apiEndPoint, { userId });
+
+      setProfiles(response.profiles);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Failed to load profiles.");
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  const handleEdit = async (profile) => {
+    // const newName = prompt("Enter new name:", item.fullName); // Replace with a proper modal or form
+    // if (newName) {
+    //   await updateBiodata(item._id, { fullName: newName });
+    //   loadBiodata();
+    // }
+    // console.log("clicked", profile);
+    navigation.navigate("CreateBiodata", JSON.stringify(profile));
+  };
+
+  const handleDelete = async (id) => {
+    // Usage of deleteRequest
+    const apiEndPoint = `${APIEndPoints.delete_biodata_profile}/${id}`;
+
+    try {
+      const response = await deleteRequest(apiEndPoint); // No need to pass params here
+      console.log("Delete response:", response);
+      fetchProfiles();
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <LinearGradient colors={GRADIENT_COLORS.backgroundGradient}>
         <ScrollView style={styles.container}>
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -81,10 +138,9 @@ const LandingView = () => {
             <SvgXml xml={menuSvg} width={40} height={40} />
             <Text style={{ fontSize: 20, fontWeight: "bold" }}>Koli Vivah</Text>
             <SvgXml xml={notificationSvg} width={40} height={40} />
-          </View>
-
+          </View> */}
+          <Header />
           <SearchBar />
-
           {/* <AutoScrollImageCarousel images={imageUrls} interval={1500} /> */}
           <NewsTicker images={imageUrls} />
 
@@ -104,8 +160,13 @@ const LandingView = () => {
           </View>
           <Recommendations />
 
-          <View style={{ margin: 50 }}></View>
+          <CreatedBiodata
+            data={profiles}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
 
+          <View style={{ margin: 50 }}></View>
           <ProfileModal
             visible={modalVisible}
             onClose={() => setModalVisible(false)}

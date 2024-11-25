@@ -6,13 +6,15 @@ import { SvgXml } from "react-native-svg";
 import Home from "../../Screens/Home";
 import SettingsScreen from "./set_screen_view";
 import LandingView from "../../home_module/view/landing_view";
+import BiodataFilter from "../../Components/Biodata/Search/BiodataFilter";
 
 // Screen Components
 function ProfileScreen() {
   return (
     <View style={styles.screen}>
       {/* <Text style={styles.text}>Profile Screen</Text> */}
-      <Home></Home>
+      {/* <Home></Home> */}
+      <BiodataFilter></BiodataFilter>
     </View>
   );
 }
@@ -104,8 +106,8 @@ export default function TabView() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
   },
   text: {
     fontSize: 24,
