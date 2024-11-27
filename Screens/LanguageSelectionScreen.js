@@ -17,6 +17,7 @@ import GRADIENT_COLORS from "../constants/Colors"; // Gradient colors
 import { LanguageContext } from "../Context/LanguageContext"; // Context for language selection
 import { token_storage } from "../utils/AsyncStorageLocal/AsyncStorgaeLocal";
 import { AuthContext } from "../Context/authContext";
+import LoadingAnimation from "../Components/Loader/loader";
 
 const LanguageSelectionScreen = () => {
   const loadingAnimation = require("../assets/ganesha.json");
@@ -37,7 +38,7 @@ const LanguageSelectionScreen = () => {
       const app_access_token = await token_storage.get("app_access_token");
       const app_refresh_token = await token_storage.get("app_refresh_token");
 
-      console.log(app_access_token, app_refresh_token);
+      // console.log(app_access_token, app_refresh_token);
 
       if (app_access_token) {
         const decodedAccessToken = jwtDecode(app_access_token);
@@ -102,7 +103,7 @@ const LanguageSelectionScreen = () => {
           loop
           style={styles.animation}
         /> */}
-        <Text>Loading</Text>
+        {loading && <LoadingAnimation visible={loading} loop={true} />}
       </View>
     );
   }

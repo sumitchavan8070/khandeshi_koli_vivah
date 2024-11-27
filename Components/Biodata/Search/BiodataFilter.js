@@ -1,4 +1,244 @@
-import React, { useEffect, useState } from "react";
+// import React, { useContext, useEffect, useState } from "react";
+// import {
+//   View,
+//   Text,
+//   TouchableOpacity,
+//   StyleSheet,
+//   Modal,
+//   Dimensions,
+//   Alert,
+//   SafeAreaView,
+// } from "react-native";
+// import { Dropdown } from "react-native-element-dropdown";
+// import { SvgXml } from "react-native-svg";
+// import { deleteSvg, filterSvg } from "../../../constants/Svg";
+// import SearchBar from "./SearchBar";
+// import Header from "../../Header/Header";
+// import BiodataItemList from "./BiodataItemList";
+// import ViewSwitchButton from "./ViewSwitchButton";
+// import BiodataItemGrid from "./BiodataItemGrid";
+// import APIEndPoints from "../../../utils/network_service/api_endpoints";
+// import { getRequest } from "../../../utils/network_service/api_request";
+// import LoadingAnimation from "../../Loader/loader";
+// import cities from "../../../constants/MaharashtraCities.json";
+// import { LanguageContext } from "../../../Context/LanguageContext";
+
+// const BiodataFilter = () => {
+//   const [gender, setGender] = useState("All");
+//   const [occupation, setOccupation] = useState(null);
+//   const [district, setDistrict] = useState(null);
+//   const [loading, setLoading] = useState(false);
+
+//   const [biodata, setBiodata] = useState([]); // State for fetched profiles
+//   const [isGridView, setIsGridView] = useState(true);
+
+//   const { translations } = useContext(LanguageContext);
+
+//   const districts =
+//     cities?.districts?.map((district) => ({
+//       label: district.district,
+//       value: district.district,
+//     })) ?? [];
+
+//   const occupationData = [
+//     { label: translations.Unemployed, value: "Unemployed" },
+//     { label: translations.Business, value: "Business" },
+
+//     { label: translations.Engineer, value: "Engineer" },
+//     { label: translations.Doctor, value: "Doctor" },
+//     { label: translations.Driver, value: "Driver" },
+//     { label: translations.Teacher, value: "Teacher" },
+//     { label: translations.Lawyer, value: "Lawyer" },
+//     { label: translations.Nurse, value: "Nurse" },
+//     { label: translations.Architect, value: "Architect" },
+//     { label: translations.Electrician, value: "Electrician" },
+//     { label: translations.Plumber, value: "Plumber" },
+//     { label: translations.Carpenter, value: "Carpenter" },
+//     { label: translations.Chef, value: "Chef" },
+//     { label: translations.Pilot, value: "Pilot" },
+//     { label: translations.Artist, value: "Artist" },
+//     { label: translations.Farmer, value: "Farmer" },
+//     { label: translations.Mechanic, value: "Mechanic" },
+//     { label: translations.Scientist, value: "Scientist" },
+//     { label: translations.Pharmacist, value: "Pharmacist" },
+//     { label: translations.SoftwareDeveloper, value: "SoftwareDeveloper" },
+//     { label: translations.Accountant, value: "Accountant" },
+//     { label: translations.PoliceOfficer, value: "PoliceOfficer" },
+//     { label: translations.Other, value: "Other" }, // "Other" option
+//   ];
+
+//   const [modalVisible, setModalVisible] = useState(false);
+
+//   // Function to generate JSON and handle API call
+//   // const applyFilters = () => {
+//   //   const filterData = {
+//   //     gender: gender,
+//   //     occupation: occupation || "All",
+//   //     district: district || "All",
+//   //   };
+
+//   //   // Example: Fetch data from the server using the filters
+//   //   // console.log("Filter Data:", filterData);
+
+//   //   // Simulating a success response (replace with an actual fetch/axios call)
+//   //   Alert.alert("Filters Applied", JSON.stringify(filterData, null, 2));
+
+//   //   // Close the modal
+//   //   setModalVisible(false);
+//   // };
+
+//   const applyFilters = () => {
+//     const filterData = {
+//       gender: gender,
+//       occupation: occupation || "All",
+//       district: district || "All",
+//     };
+
+//     const filteredData = biodata.filter((item) => {
+//       const genderMatch =
+//         filterData.gender === "All" || item.gender === filterData.gender;
+//       const occupationMatch =
+//         filterData.occupation === "All" ||
+//         item.occupation === filterData.occupation;
+//       const districtMatch =
+//         filterData.district === "All" || item.district === filterData.district;
+
+//       return genderMatch && occupationMatch && districtMatch;
+//     });
+
+//     setBiodata(filteredData);
+
+//     Alert.alert("Filters Applied", JSON.stringify(filterData, null, 2));
+//     setModalVisible(false);
+//   };
+
+//   const fetchProfiles = async () => {
+//     setLoading(true);
+//     const apiEndPoint = APIEndPoints.get_all_biodata;
+//     const response = await getRequest(apiEndPoint);
+//     console.log("--->", response);
+//     setBiodata(response.profiles);
+//     setLoading(false);
+//   };
+
+//   useEffect(() => {
+//     fetchProfiles();
+//   }, []);
+
+//   const handleToggle = (value) => {
+//     setIsGridView(value); // Update the state with the passed value
+//     // console.log("View mode:", value ? "Grid" : "List");
+//   };
+
+//   return (
+//     <SafeAreaView style={{ flex: 1, paddingTop: "5%" }}>
+//       <View style={styles.mainContainer}>
+//         <Header />
+//         <SearchBar />
+
+//         <View style={styles.menuContainer}>
+//           <TouchableOpacity
+//             style={styles.button}
+//             onPress={() => setModalVisible(true)}
+//           >
+//             <Text style={styles.text}>Filters</Text>
+//             <SvgXml xml={filterSvg} width="18" height="18" fill="#03A9F4" />
+//           </TouchableOpacity>
+
+//           <ViewSwitchButton onToggle={handleToggle} />
+//         </View>
+
+//         <View style={{ flex: 1 }}>
+//           {isGridView ? (
+//             <BiodataItemGrid data={biodata} />
+//           ) : (
+//             <BiodataItemList data={biodata} />
+//           )}
+//         </View>
+
+//         <View style={{ marginTop: 70, backgroundColor: "transparent" }}></View>
+
+//         {loading && <LoadingAnimation visible={loading} loop={true} />}
+
+//         {/* Modal */}
+//         <Modal
+//           visible={modalVisible}
+//           animationType="slide"
+//           transparent={true}
+//           onRequestClose={() => setModalVisible(false)}
+//         >
+//           <View style={styles.modalOverlay}>
+//             <View style={styles.modalContainer}>
+//               <Text style={styles.modalTitle}>Filter Options</Text>
+
+//               {/* Gender Filters */}
+//               <View style={styles.filterGroup}>
+//                 {["All", "Male", "Female"].map((item) => (
+//                   <TouchableOpacity
+//                     key={item}
+//                     onPress={() => setGender(item)}
+//                     style={[
+//                       styles.filterOption,
+//                       gender === item && styles.activeFilter,
+//                     ]}
+//                   >
+//                     <Text
+//                       style={[
+//                         styles.filterOptionText,
+//                         gender === item && styles.activeFilterText,
+//                       ]}
+//                     >
+//                       {item}
+//                     </Text>
+//                   </TouchableOpacity>
+//                 ))}
+//               </View>
+
+//               {/* Occupation Dropdown */}
+//               <Dropdown
+//                 style={styles.dropdown}
+//                 placeholderStyle={styles.placeholderStyle}
+//                 selectedTextStyle={styles.selectedTextStyle}
+//                 inputSearchStyle={styles.inputSearchStyle}
+//                 data={occupationData}
+//                 labelField="label"
+//                 valueField="value"
+//                 placeholder="Select Occupation"
+//                 value={occupation}
+//                 onChange={(item) => setOccupation(item.value)}
+//               />
+
+//               {/* District Dropdown */}
+//               <Dropdown
+//                 style={styles.dropdown}
+//                 placeholderStyle={styles.placeholderStyle}
+//                 selectedTextStyle={styles.selectedTextStyle}
+//                 inputSearchStyle={styles.inputSearchStyle}
+//                 data={districts}
+//                 labelField="label"
+//                 valueField="value"
+//                 placeholder="Select District"
+//                 value={district}
+//                 onChange={(item) => setDistrict(item.value)}
+//                 maxHeight={"60%"}
+//               />
+
+//               {/* Apply Filters Button */}
+//               <TouchableOpacity
+//                 style={styles.applyButton}
+//                 onPress={applyFilters}
+//               >
+//                 <Text style={styles.applyButtonText}>Apply Filters</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </View>
+//         </Modal>
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
+
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,27 +259,57 @@ import ViewSwitchButton from "./ViewSwitchButton";
 import BiodataItemGrid from "./BiodataItemGrid";
 import APIEndPoints from "../../../utils/network_service/api_endpoints";
 import { getRequest } from "../../../utils/network_service/api_request";
-
+import LoadingAnimation from "../../Loader/loader";
+import cities from "../../../constants/MaharashtraCities.json";
+import { LanguageContext } from "../../../Context/LanguageContext";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 const BiodataFilter = () => {
   const [gender, setGender] = useState("All");
   const [occupation, setOccupation] = useState(null);
   const [district, setDistrict] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [biodata, setBiodata] = useState([]); // State for fetched profiles
+  const [filteredBiodata, setFilteredBiodata] = useState([]); // State for filtered profiles
+  const [isGridView, setIsGridView] = useState(true);
+
+  const { translations } = useContext(LanguageContext);
+
+  const districts =
+    cities?.districts?.map((district) => ({
+      label: district.district,
+      value: district.district,
+    })) ?? [];
 
   const occupationData = [
-    { label: "Engineer", value: "Engineer" },
-    { label: "Doctor", value: "Doctor" },
-    { label: "Teacher", value: "Teacher" },
-  ];
+    { label: translations.Unemployed, value: "Unemployed" },
+    { label: translations.Business, value: "Business" },
 
-  const districtData = [
-    { label: "District 1", value: "District1" },
-    { label: "District 2", value: "District2" },
-    { label: "District 3", value: "District3" },
+    { label: translations.Engineer, value: "Engineer" },
+    { label: translations.Doctor, value: "Doctor" },
+    { label: translations.Driver, value: "Driver" },
+    { label: translations.Teacher, value: "Teacher" },
+    { label: translations.Lawyer, value: "Lawyer" },
+    { label: translations.Nurse, value: "Nurse" },
+    { label: translations.Architect, value: "Architect" },
+    { label: translations.Electrician, value: "Electrician" },
+    { label: translations.Plumber, value: "Plumber" },
+    { label: translations.Carpenter, value: "Carpenter" },
+    { label: translations.Chef, value: "Chef" },
+    { label: translations.Pilot, value: "Pilot" },
+    { label: translations.Artist, value: "Artist" },
+    { label: translations.Farmer, value: "Farmer" },
+    { label: translations.Mechanic, value: "Mechanic" },
+    { label: translations.Scientist, value: "Scientist" },
+    { label: translations.Pharmacist, value: "Pharmacist" },
+    { label: translations.SoftwareDeveloper, value: "SoftwareDeveloper" },
+    { label: translations.Accountant, value: "Accountant" },
+    { label: translations.PoliceOfficer, value: "PoliceOfficer" },
+    { label: translations.Other, value: "Other" }, // "Other" option
   ];
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Function to generate JSON and handle API call
   const applyFilters = () => {
     const filterData = {
       gender: gender,
@@ -47,45 +317,37 @@ const BiodataFilter = () => {
       district: district || "All",
     };
 
-    // Example: Fetch data from the server using the filters
-    console.log("Filter Data:", filterData);
+    const filteredData = biodata.filter((item) => {
+      const genderMatch =
+        filterData.gender === "All" || item.candidateType === filterData.gender;
+      const occupationMatch =
+        filterData.occupation === "All" ||
+        item.occupation === filterData.occupation;
+      const districtMatch =
+        filterData.district === "All" ||
+        item.locationInfo?.district === filterData.district;
 
-    // Simulating a success response (replace with an actual fetch/axios call)
-    Alert.alert("Filters Applied", JSON.stringify(filterData, null, 2));
+      return genderMatch && occupationMatch && districtMatch;
+    });
 
-    // Close the modal
+    setFilteredBiodata(filteredData);
+    // Alert.alert("Filters Applied", JSON.stringify(filterData, null, 2));
     setModalVisible(false);
   };
 
-  // const biodata = [
-  //   {
-  //     location: "Alice Springs NT 0870, London",
-  //     title: "Shubham Dnyandeo Chavan",
-  //     occupation: "Doctor",
-  //     maritalStatus: "Single",
-  //     age: 25,
-  //     image:
-  //       "https://media.istockphoto.com/photos/young-beautiful-woman-stock-photo-picture-id1345121223?b=1&k=20&m=1345121223&s=170667a&w=0&h=d58OIgmOyWGecmp87ohjY2TAoTGZfHHUmoV_qOd8kiQ=",
-  //   },
-  //   {
-  //     location: "Downtown NY 10013, New York",
-  //     title: "Piyush Laxman Kuwar",
-  //     occupation: "Enginneer",
-  //     maritalStatus: "Married",
-  //     age: 25,
-  //     image:
-  //       "https://media.istockphoto.com/photos/young-beautiful-woman-stock-photo-picture-id1345121223?b=1&k=20&m=1345121223&s=170667a&w=0&h=d58OIgmOyWGecmp87ohjY2TAoTGZfHHUmoV_qOd8kiQ=",
-  //   },
-  // ];
-  const [biodata, setBiodata] = useState([]); // State for fetched profiles
-  const [isGridView, setIsGridView] = useState(true);
-
   const fetchProfiles = async () => {
-    const apiEndPoint = APIEndPoints.get_all_biodata;
-    const response = await getRequest(apiEndPoint);
-    console.log("responce", response);
-
-    setBiodata(response.profiles);
+    setLoading(true);
+    try {
+      const apiEndPoint = APIEndPoints.get_all_biodata;
+      const response = await getRequest(apiEndPoint);
+      setBiodata(response.profiles);
+      setFilteredBiodata(response.profiles); // Initialize filteredBiodata with all profiles
+    } catch (error) {
+      console.error("Error fetching profiles:", error);
+      Alert.alert("Error", "Failed to fetch biodata profiles.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -93,8 +355,21 @@ const BiodataFilter = () => {
   }, []);
 
   const handleToggle = (value) => {
-    setIsGridView(value); // Update the state with the passed value
-    // console.log("View mode:", value ? "Grid" : "List");
+    setIsGridView(value);
+  };
+
+  const removeFilterGender = () => {
+    setGender("All");
+    setFilteredBiodata(biodata); // Reset filtered data to original data
+  };
+
+  const removeFilterOccupation = () => {
+    setOccupation(null);
+    setFilteredBiodata(biodata); // Reset filtered data to original data
+  };
+  const removeFilterDistrict = () => {
+    setDistrict(null);
+    setFilteredBiodata(biodata); // Reset filtered data to original data
   };
 
   return (
@@ -114,21 +389,66 @@ const BiodataFilter = () => {
 
           <ViewSwitchButton onToggle={handleToggle} />
         </View>
-        {/* <BiodataItemList data={hotelData} />
 
-        <BiodataItemGrid data={hotelData} /> */}
+        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+          {gender !== "All" && (
+            <View style={styles.activeFilterTag}>
+              <Text style={styles.activeFilterText}>{gender}</Text>
+              <TouchableOpacity onPress={() => removeFilterGender("gender")}>
+                <SimpleLineIcons name="close" size={18} color="gray" />
+              </TouchableOpacity>
+            </View>
+          )}
+          {occupation && (
+            <View style={styles.activeFilterTag}>
+              <Text style={styles.activeFilterText}>{occupation}</Text>
+              <TouchableOpacity
+                onPress={() => removeFilterOccupation("occupation")}
+              >
+                {/* <SvgXml xml={deleteSvg} width="14" height="14" /> */}
+                <SimpleLineIcons name="close" size={18} color="gray" />
+              </TouchableOpacity>
+            </View>
+          )}
+          {district && (
+            <View style={styles.activeFilterTag}>
+              <Text style={styles.activeFilterText}>{district}</Text>
+              <TouchableOpacity
+                onPress={() => removeFilterDistrict("district")}
+              >
+                {/* <SvgXml xml={deleteSvg} width="14" height="14" /> */}
+                <SimpleLineIcons name="close" size={18} color="gray" />
+              </TouchableOpacity>
+            </View>
+          )}
+          {/* {(gender !== "All" || occupation || district) && (
+            <TouchableOpacity
+              onPress={() => {
+                setGender("All");
+                setOccupation(null);
+                setDistrict(null);
+                applyFilters();
+              }}
+              style={styles.clearAllButton}
+            >
+              <Text style={styles.clearAllText}>Clear All</Text>
+            </TouchableOpacity>
+          )} */}
+        </View>
 
         <View style={{ flex: 1 }}>
           {isGridView ? (
-            <BiodataItemGrid data={biodata} />
+            <BiodataItemGrid data={filteredBiodata} />
           ) : (
-            <BiodataItemList data={biodata} />
+            <BiodataItemList data={filteredBiodata} />
           )}
         </View>
 
-        <View style={{ marginTop: 70, backgroundColor: "transparent" }}></View>
+        {loading && <LoadingAnimation visible={loading} loop={true} />}
 
-        {/* Modal */}
+        <View style={{ marginTop: 60 }}></View>
+
+        {/* Filter Modal */}
         <Modal
           visible={modalVisible}
           animationType="slide"
@@ -137,7 +457,16 @@ const BiodataFilter = () => {
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Filter Options</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.modalTitle}>Filter Options</Text>
+                <SimpleLineIcons
+                  name="close"
+                  size={24}
+                  color="#007BFF"
+                  style={{ bottom: "20%", right: "5%" }}
+                  onPress={() => setModalVisible(false)}
+                />
+              </View>
 
               {/* Gender Filters */}
               <View style={styles.filterGroup}>
@@ -165,9 +494,6 @@ const BiodataFilter = () => {
               {/* Occupation Dropdown */}
               <Dropdown
                 style={styles.dropdown}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
                 data={occupationData}
                 labelField="label"
                 valueField="value"
@@ -179,10 +505,7 @@ const BiodataFilter = () => {
               {/* District Dropdown */}
               <Dropdown
                 style={styles.dropdown}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                data={districtData}
+                data={districts}
                 labelField="label"
                 valueField="value"
                 placeholder="Select District"
@@ -190,7 +513,6 @@ const BiodataFilter = () => {
                 onChange={(item) => setDistrict(item.value)}
               />
 
-              {/* Apply Filters Button */}
               <TouchableOpacity
                 style={styles.applyButton}
                 onPress={applyFilters}
@@ -211,13 +533,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginHorizontal: 20,
-    marginBottom: 10,
     backgroundColor: "transparent",
   },
   mainContainer: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
     backgroundColor: "#F4F7FE",
   },
   filterButton: {
@@ -321,6 +640,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // fontWeight: "bold",
     marginRight: 5,
+  },
+
+  activeFilterTag: {
+    flexDirection: "row",
+    alignItems: "center",
+    // backgroundColor: "#e0f4ff",
+    backgroundColor: "white",
+    padding: 8,
+    margin: 5,
+    borderRadius: 20,
+  },
+  activeFilterText: {
+    fontSize: 14,
+    color: "#007BFF",
+    marginRight: 5,
+  },
+  clearAllButton: {
+    backgroundColor: "#ff5555",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginLeft: 5,
+  },
+  clearAllText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });
 

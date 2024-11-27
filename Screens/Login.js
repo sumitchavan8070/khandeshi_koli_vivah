@@ -90,10 +90,10 @@ const Login = () => {
 
       setState(response.user);
 
-      console.log(
-        "--------------------------response.user----------",
-        response.user
-      );
+      // console.log(
+      //   "--------------------------response.user----------",
+      //   response.user
+      // );
 
       // navigation.navigate("Home");
       // return;

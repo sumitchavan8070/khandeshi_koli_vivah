@@ -10,7 +10,7 @@ import React, { useContext, useState } from "react";
 import { stylesBiodata as styles } from "./SectionStyle";
 
 import AddressFormComponent from "../FormComponent/AddressFormComponent";
-import cities from "../../../constants/test.json";
+import cities from "../../../constants/MaharashtraCities.json";
 import { LanguageContext } from "../../../Context/LanguageContext";
 import { themeColor } from "../../../constants/Colors";
 

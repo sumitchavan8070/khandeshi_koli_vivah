@@ -1660,6 +1660,16 @@
             ]
         },
         {
+            "district": "Mumbai",
+            "subDistricts": [
+                {
+                    "subDistrict": "Thane",
+                    "villages":["Parel"]
+                }
+            ]
+
+        },
+        {
             "district": "Akola",
             "subDistricts": [
                 {

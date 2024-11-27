@@ -23,7 +23,11 @@ export default GRADIENT_COLORS;
 
 // Remove the default export for themeColor
 export const themeColor = {
+  appColor: "#3498db",
   appColorLight: "#066AC9",
   appColorLightExtra: "#aed6f1",
   filedDisableColor: "#ebf5fb",
+  text: "black",
+  icon: "#3498db",
+  background: "#fff",
 };

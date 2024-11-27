@@ -66,6 +66,7 @@ const TRANSLATIONS = {
     contact: "Contact",
     private: "Private",
     sendIntrest: "Show Intrest",
+    call: "Call",
     viewProfile: "View Profile",
     goBack: "Previous",
     goNext: "Next",
@@ -334,6 +335,7 @@ const TRANSLATIONS = {
     enterFamilyMobile: "Please enter valid mobile number.",
   },
   hi: {
+    call: "संपर्क करें",
     alertMessage: "कृपया सही जानकारी दर्ज करें",
     continue: "जारी रखें",
     register: "पंजीकरण करें",
@@ -648,6 +650,8 @@ const TRANSLATIONS = {
     enterFamilyMobile: "कृपया वैध मोबाइल नंबर दर्ज करें.",
   },
   mr: {
+    call: "संपर्क करा",
+
     alertMessage: "कृपया योग्य माहिती भरा",
     continue: "पुढे जा",
     register: "नोंदणी करा",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,11 +10,49 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { heartSvg, locationSVg } from "../../../constants/Svg";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CLOUDINARY_BASE_URL = "https://res.cloudinary.com/sdchavan/image/upload/";
 
 const BiodataItemGrid = ({ data }) => {
+  const navigation = useNavigation(); // Hook to access navigation
+
   const numColumns = 2; // Number of grid columns
+
+  const [bookmarkedItems, setBookmarkedItems] = useState([]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const loadBookmarks = async () => {
+      const storedBookmarks = await AsyncStorage.getItem("bookmark");
+      if (storedBookmarks) {
+        setBookmarkedItems(JSON.parse(storedBookmarks));
+      }
+    };
+    // loadBookmarks();
+
+    if (isFocused) {
+      loadBookmarks();
+    }
+  }, [isFocused]);
+
+  const saveBookmark = async (itemId) => {
+    const updatedBookmarks = [...bookmarkedItems, itemId];
+    setBookmarkedItems(updatedBookmarks);
+    await AsyncStorage.setItem("bookmark", JSON.stringify(updatedBookmarks));
+  };
+
+  const removeBookmark = async (itemId) => {
+    const updatedBookmarks = bookmarkedItems.filter((id) => id !== itemId);
+    setBookmarkedItems(updatedBookmarks);
+    await AsyncStorage.setItem("bookmark", JSON.stringify(updatedBookmarks));
+  };
+
+  const isBookmarked = (itemId) => {
+    return bookmarkedItems.includes(itemId);
+  };
 
   const renderItem = ({ item }) => {
     const firstImageId =
@@ -34,8 +72,8 @@ const BiodataItemGrid = ({ data }) => {
           <View style={styles.locationRow}>
             <SvgXml xml={locationSVg} width="15" height="15" />
             <Text style={styles.location}>
-              {item.locationInfo.district},{item.locationInfo.subDistrict},
-              {item.locationInfo.village}
+              {item.locationInfo?.district},{item.locationInfo?.subDistrict},
+              {item.locationInfo?.village}
             </Text>
           </View>
           <Text style={styles.title}>{item.fullName}</Text>
@@ -49,11 +87,31 @@ const BiodataItemGrid = ({ data }) => {
         </View>
         {/* Actions Section */}
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.chatButton}>
+          {/* <TouchableOpacity style={styles.chatButton}>
             <SvgXml xml={heartSvg} width="18" height="18" />
             <Text style={styles.chatText}>Add to favourite</Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={styles.chatButton}
+            onPress={() =>
+              isBookmarked(item._id)
+                ? removeBookmark(item._id)
+                : saveBookmark(item._id)
+            }
+          >
+            <SvgXml
+              xml={heartSvg(isBookmarked(item._id) ? "red" : "white")}
+              width="18"
+              height="18"
+            />
+            <Text style={styles.chatText}>Add to Favourite</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.bookButton}>
+          <TouchableOpacity
+            style={styles.bookButton}
+            onPress={() => {
+              navigation.navigate("ProfileScreen", { user: item });
+            }} // Navigate to Profile screen
+          >
             <Text style={styles.bookText}>View Profile</Text>
           </TouchableOpacity>
         </View>

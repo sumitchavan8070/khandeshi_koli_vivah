@@ -66,6 +66,8 @@ const PersonalInfoSection = ({
     { label: translations.Other, value: "Other" }, // "Other" option
   ];
 
+  //same occupation data is available in biodata filter component
+
   const casteData = [
     { label: translations.TokareKoli, value: "TokareKoli" },
     { label: translations.MahadevKoli, value: "MahadevKoli" },

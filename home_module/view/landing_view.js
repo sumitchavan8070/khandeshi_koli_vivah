@@ -29,6 +29,7 @@ import {
   getRequestWithParams,
 } from "../../utils/network_service/api_request";
 import Header from "../../Components/Header/Header";
+import Scoreboard from "../../Components/Profile/Scoreboard";
 
 const LandingView = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -100,12 +101,6 @@ const LandingView = () => {
   };
 
   const handleEdit = async (profile) => {
-    // const newName = prompt("Enter new name:", item.fullName); // Replace with a proper modal or form
-    // if (newName) {
-    //   await updateBiodata(item._id, { fullName: newName });
-    //   loadBiodata();
-    // }
-    // console.log("clicked", profile);
     navigation.navigate("CreateBiodata", JSON.stringify(profile));
   };
 
@@ -126,22 +121,8 @@ const LandingView = () => {
     <SafeAreaView style={{ marginTop: 20 }}>
       <LinearGradient colors={GRADIENT_COLORS.backgroundGradient}>
         <ScrollView style={styles.container}>
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginHorizontal: 20,
-              marginTop: 20,
-            }}
-          >
-            <SvgXml xml={menuSvg} width={40} height={40} />
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>Koli Vivah</Text>
-            <SvgXml xml={notificationSvg} width={40} height={40} />
-          </View> */}
           <Header />
           <SearchBar />
-          {/* <AutoScrollImageCarousel images={imageUrls} interval={1500} /> */}
           <NewsTicker images={imageUrls} />
 
           <View style={styles.containerButtons}>
@@ -158,13 +139,20 @@ const LandingView = () => {
               onPress={handleChooseTemplate}
             />
           </View>
-          <Recommendations />
 
-          <CreatedBiodata
+          <Scoreboard
             data={profiles}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
+
+          <Recommendations />
+
+          {/* <CreatedBiodata
+            data={profiles}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          /> */}
 
           <View style={{ margin: 50 }}></View>
           <ProfileModal

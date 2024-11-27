@@ -13,6 +13,7 @@ import Login from "../../Screens/Login";
 import TabView from "../../utils/constants/tab_navigation_view";
 import CreateBioData from "../../Screens/CreateBiodata";
 import BiodataTemplateScreen from "../Biodata/Template/BiodataTemplateScreen";
+import ProfileScreen from "../Biodata/Search/ProfileScreen";
 
 const ScreenMenu = () => {
   const [state] = useContext(AuthContext);
@@ -52,6 +53,12 @@ const ScreenMenu = () => {
           <Stack.Screen
             name="BiodataTemplateScreen"
             component={BiodataTemplateScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
             options={{ headerShown: false }}
           />
         </>

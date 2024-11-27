@@ -54,9 +54,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // margin: 10,
+    backgroundColor: "transparent",
   },
   button: {
     padding: 10,
+    backgroundColor: "transparent",
   },
 });
 

@@ -48,6 +48,7 @@ const CreateBioData = ({ route }) => {
   const formDataSent = route?.params || false;
 
   const preFilledData = formDataSent ? JSON.parse(formDataSent) : null;
+  // console.log("--------pre---------->", preFilledData);
 
   const [formData, setFormData] = useState({
     _id: preFilledData?._id || "",

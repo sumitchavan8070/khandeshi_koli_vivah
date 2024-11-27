@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import BlurBottomNavigationBar from "./BlurBottomNavigationBar"; // Update this path as needed
+import Bookmarks from "../../Components/Biodata/Bookmark/Bookmarks";
 
 function SettingsScreen() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -13,17 +14,18 @@ function SettingsScreen() {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      justifyContent: "flex-end", // Ensure the navigation bar stays at the bottom
-      padding: 16,
+      // justifyContent: "flex-end", // Ensure the navigation bar stays at the bottom
+      // padding: 16,
     },
   });
 
   return (
     <View style={styles.screen}>
-      <BlurBottomNavigationBar
+      {/* <BlurBottomNavigationBar
         selectedIndex={selectedIndex}
         onItemTapped={handleItemTapped}
-      />
+      /> */}
+      <Bookmarks />
     </View>
   );
 }

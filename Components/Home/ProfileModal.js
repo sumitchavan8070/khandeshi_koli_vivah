@@ -17,6 +17,7 @@ import {
 import APIEndPoints from "../../utils/network_service/api_endpoints";
 import { AuthContext } from "../../Context/authContext";
 import { themeColor } from "../../constants/Colors";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
 const ProfileModal = ({ visible, onClose, navigateToTemplate }) => {
   const [profiles, setProfiles] = useState([]);

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import LottieView from "lottie-react-native";
-import loadingAnimation from "../../assets/havan.json";
+import loadingAnimation from "../../assets/ganesha.json";
 
 const LoadingAnimation = ({ visible, loop }) => {
   if (!visible) return null;

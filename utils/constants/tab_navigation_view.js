@@ -7,13 +7,12 @@ import Home from "../../Screens/Home";
 import SettingsScreen from "./set_screen_view";
 import LandingView from "../../home_module/view/landing_view";
 import BiodataFilter from "../../Components/Biodata/Search/BiodataFilter";
+import UserScreen from "../../Screens/UserScreen";
 
 // Screen Components
 function ProfileScreen() {
   return (
     <View style={styles.screen}>
-      {/* <Text style={styles.text}>Profile Screen</Text> */}
-      {/* <Home></Home> */}
       <BiodataFilter></BiodataFilter>
     </View>
   );
@@ -22,7 +21,7 @@ function ProfileScreen() {
 function AboutScreen() {
   return (
     <View style={styles.screen}>
-      <Text style={styles.text}>About Screen</Text>
+      <UserScreen />
     </View>
   );
 }
@@ -65,7 +64,7 @@ export default function TabView() {
             case "Profile":
               iconXml = searchSvg;
               break;
-            case "Settings":
+            case "Favorites":
               iconXml = heartSvg;
               break;
             case "About":
@@ -96,7 +95,7 @@ export default function TabView() {
     >
       <Tab.Screen name="Home" component={LandingView} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Favorites" component={SettingsScreen} />
       <Tab.Screen name="About" component={AboutScreen} />
     </Tab.Navigator>
     // </NavigationContainer>
